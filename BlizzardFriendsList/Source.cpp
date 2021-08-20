@@ -322,7 +322,7 @@ int main(int argc, char** argv)
 	users.sort(compare_users);
 
 	printf("\nThe %d Friends we found on memory :\n\n", (int)users.size());
-	printf("          Battletag     |     Name         |  MemAddr  |  Status |   Last Seen Mobile  |  Last Seen Desktop  |  SessId  |        Friend Note\n");
+	printf("          Battletag     |     Name         |  MemAddr  |  Status |   Last Seen Mobile  |    Last activity    |  SessId  |        Friend Note\n");
 	for (auto it = users.begin(); it != users.end(); ++it)
 	{
 		ReadProcessMemory(Handle, (char*)(it->accountImplAddr), accountBuffer, 275, NULL);
@@ -341,10 +341,10 @@ int main(int argc, char** argv)
 		printf(" | %-7s", status[(int)it->status]);
 
 		// Display timestamps
-		int64_t lastSeenDesktopTimestamp = *(int64_t*)(accountBuffer + 0x78);
+		int64_t lastActivityTimestamp = *(int64_t*)(accountBuffer + 0x78);
 		int64_t lastSeenMobileTimestamp = *(int64_t*)(accountBuffer + 0x80);
 		printdate(lastSeenMobileTimestamp);
-		printdate(lastSeenDesktopTimestamp);
+		printdate(lastActivityTimestamp);
 
 		// Display session ID
 		printf(" | %08x", *(uint32_t*)(accountBuffer + 0xA8));
